@@ -1,0 +1,8 @@
+const Button = () => {
+  return (
+    <button className="flex h-10 w-[340px] items-center justify-center rounded-sm bg-[#FFCE22] px-5 py-2.5 hover:cursor-pointer hover:bg-[#FFD84D]">
+      <p>Done</p>
+    </button>
+  );
+};
+export default Button;

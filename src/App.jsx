@@ -1,8 +1,12 @@
 import { useState } from "react";
-import "./App.css";
+import PagesModal from "./components/PagesModal";
 
 function App() {
-  return <></>;
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <PagesModal />
+    </div>
+  );
 }
 
 export default App;
