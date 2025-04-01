@@ -2,45 +2,51 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const useData = () => {
-  const [checkListData, setCheckListData] = useState([]);
+  const [pages, setPages] = useState([]);
+
+  const [selectedPages, setSelectedPages] = useState([]);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
       const response = await axios.get("/data.json");
-      setCheckListData(response.data);
+      setPages(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error);
       setError(error);
     }
     setIsLoading(false);
   };
-  const handleCheckChange = (id) => {
-    setCheckListData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item,
-      ),
-    );
-  };
-
-  const handleCheckAllChange = () => {
-    const allChecked = checkListData.every((item) => item.checked);
-    setCheckListData((prevData) =>
-      prevData.map((item) => ({ ...item, checked: !allChecked })),
-    );
-  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  return {
-    checkListData,
+  const handleSelectPage = (id) => {
+    setSelectedPages((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((page) => page !== id)
+        : [...prevSelected, id],
+    );
+  };
 
-    setCheckListData,
-    handleCheckAllChange,
-    handleCheckChange,
+  const handleAllSelectPages = () => {
+    setSelectedPages(
+      selectedPages.length === pages.length ? [] : pages.map((page) => page.id),
+    );
+  };
+
+  return {
+    pages,
+    isLoading,
+    selectedPages,
+    selectAll,
+
+    setPages,
+    handleSelectPage,
+    handleAllSelectPages,
   };
 };
 
