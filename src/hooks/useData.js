@@ -6,26 +6,20 @@ const useData = () => {
 
   const [selectedPages, setSelectedPages] = useState([]);
 
-  const [formData, setFormData] = useState([
-    {
-      title: "",
-      selected: false,
-    },
-  ]);
+  const [formData, setFormData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("/data.json");
-      setPages(response.data);
-      // console.log(response.data);
-    } catch (error) {
-      console.log(error);
-      setError(error);
-    }
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    const updatedFormData = pages.map((page) => {
+      return {
+        id: page.id,
+        title: page.title,
+        selected: selectedPages.includes(page.id),
+      };
+    });
+    setFormData(updatedFormData);
+  }, [selectedPages, pages]);
 
   useEffect(() => {
     fetchData();
@@ -44,31 +38,30 @@ const useData = () => {
       selectedPages.length === pages.length ? [] : pages.map((page) => page.id),
     );
   };
-  useEffect(() => {
-    const updatedFormData = pages.map((page) => {
-      return {
-        id: page.id,
-        title: page.title,
-        selected: selectedPages.includes(page.id),
-      };
-    });
-    setFormData(updatedFormData);
-  }, [selectedPages, pages]);
+
+  const fetchData = async () => {
+    try {
+      // This is a dummy GET API call for demonstration purposes, data.json file has json data just like the one in the API call
+      const response = await axios.get("/data.json");
+      setPages(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+      setError(error);
+    }
+    setIsLoading(false);
+  };
 
   const handleDone = async () => {
     try {
+      // This is a dummy API endpoint for demonstration purposes
       const response = await axios.post(
         "https://jsonplaceholder.typicode.com/posts",
         formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
       );
-      console.log("Data sent successfully:", response.data);
+      console.log("Settings saved successfully:", response.data);
       setSelectedPages([]);
-      alert("Data sent successfully!");
+      alert("Settings saved successfully!");
     } catch (error) {
       console.log(error);
     }

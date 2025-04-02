@@ -1,28 +1,24 @@
 import Button from "./Button";
-import HorizontalLine from "./HorizontalLine";
+import Divider from "./Divider";
 import PageItem from "./PageItem";
-import SelectAllCheckItem from "./SelectAllCheckItem";
 
 import useData from "../hooks/useData";
-import { useEffect } from "react";
 
 const PagesModal = () => {
-  const { handleAllSelectPages, handleSelectPage, pages, selectedPages } =
+  const { pages, selectedPages, handleAllSelectPages, handleSelectPage } =
     useData();
-
-  useEffect(() => {
-    console.log("Selected pages:", selectedPages);
-  }, [selectedPages]);
 
   return (
     <div className="flex justify-center rounded-md border-[#EEEEEE] bg-white p-4 shadow-[0px_8px_15px_0px_#1414141F]">
       <div>
-        <SelectAllCheckItem
-          checked={selectedPages.length === pages.length && pages.length > 0}
-          onChange={handleAllSelectPages}
+        <PageItem
+          id="select-all"
+          title="All pages"
+          isChecked={selectedPages.length === pages.length && pages.length > 0}
+          onSelect={handleAllSelectPages}
         />
 
-        <HorizontalLine />
+        <Divider />
 
         <div>
           {pages.map((page) => (
@@ -36,7 +32,7 @@ const PagesModal = () => {
           ))}
         </div>
 
-        <HorizontalLine />
+        <Divider />
 
         <Button />
       </div>
