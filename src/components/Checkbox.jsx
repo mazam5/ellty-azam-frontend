@@ -1,19 +1,21 @@
-import { useState } from "react";
-
 import Check from "../assets/icons/Check";
 
-const Checkbox = ({ isChecked, handleChange }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
+const Checkbox = ({ isChecked, handleChange, isHovered }) => {
   return (
     <span
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleChange}
-      className={`${isChecked && "bg-[#2469F6]"} flex h-[23px] w-[23px] items-center justify-center rounded-md border border-[#BDBDBD] hover:cursor-pointer active:bg-[#5087F8] active:outline-[3px] active:outline-[#A3C3FA]`}
+      className={`flex h-6 w-6 items-center justify-center rounded-md border border-[#CDCDCD] active:bg-[#5087F8] active:outline-[3px] active:outline-[#A3C3FA] ${isChecked ? "bg-[#2469F6]" : ""} ${isChecked && isHovered ? "bg-[#5087F8]" : ""}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        handleChange();
+      }}
     >
-      <Check fill={isHovered ? "#E3E3E3" : "white"} />
+      {isHovered ? (
+        <Check fill={isChecked ? "white" : "#E3E3E3"} />
+      ) : (
+        isChecked && <Check fill="white" />
+      )}
     </span>
   );
 };
+
 export default Checkbox;
