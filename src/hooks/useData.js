@@ -6,6 +6,13 @@ const useData = () => {
 
   const [selectedPages, setSelectedPages] = useState([]);
 
+  const [formData, setFormData] = useState([
+    {
+      title: "",
+      selected: false,
+    },
+  ]);
+
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
@@ -37,16 +44,45 @@ const useData = () => {
       selectedPages.length === pages.length ? [] : pages.map((page) => page.id),
     );
   };
+  useEffect(() => {
+    const updatedFormData = pages.map((page) => {
+      return {
+        id: page.id,
+        title: page.title,
+        selected: selectedPages.includes(page.id),
+      };
+    });
+    setFormData(updatedFormData);
+  }, [selectedPages, pages]);
+
+  const handleDone = async () => {
+    try {
+      const response = await axios.post(
+        "https://jsonplaceholder.typicode.com/posts",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      console.log("Data sent successfully:", response.data);
+      setSelectedPages([]);
+      alert("Data sent successfully!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return {
     pages,
     isLoading,
     selectedPages,
-    selectAll,
 
     setPages,
     handleSelectPage,
     handleAllSelectPages,
+    handleDone,
   };
 };
 

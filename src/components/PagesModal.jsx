@@ -4,10 +4,15 @@ import PageItem from "./PageItem";
 import SelectAllCheckItem from "./SelectAllCheckItem";
 
 import useData from "../hooks/useData";
+import { useEffect } from "react";
 
 const PagesModal = () => {
   const { handleAllSelectPages, handleSelectPage, pages, selectedPages } =
     useData();
+
+  useEffect(() => {
+    console.log("Selected pages:", selectedPages);
+  }, [selectedPages]);
 
   return (
     <div className="flex justify-center rounded-md border-[#EEEEEE] bg-white p-4 shadow-[0px_8px_15px_0px_#1414141F]">
